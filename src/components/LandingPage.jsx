@@ -1,4 +1,5 @@
 import
+import
 
 
 
@@ -14,7 +15,7 @@ const LandingPage = () => {
                     backgroundPosition: "center",
                 }}
             >
-            <div className= "
+                <div className= "
             </div>
         </>
     );
