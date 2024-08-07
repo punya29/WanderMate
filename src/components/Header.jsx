@@ -1,12 +1,14 @@
 import { useState } from "react";
 import userProfile from "../assets/userProfile.jpg";
 import { headerLinks } from "../helper/data";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { motion } from "framer-motion";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  // console.log(location.pathname);
   const [showLogout, setShowLogout] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
 
@@ -35,31 +37,36 @@ const Header = () => {
         <motion.div
           initial={{ x: showSideMenu ? 600 : 0 }}
           animate={{ x: showSideMenu ? 0 : 600 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0 }}
           className={`
-            h-screen w-[80%] sm:hidden fixed top-0 right-0 bg-white z-50 rounded-lg`}
+            ${showSideMenu ? "opacity-1" : "opacity-0"}
+            h-screen w-[80%] md:hidden fixed top-0 right-0 bg-white z-50 rounded-lg transition-all duration-700`}
         >
           {headerLinks.map((item) => (
             <div key={item.id}>
               <Link
-                className="flex font-bold text-gray-500 text-lg pl-4 py-1 
-                cursor-pointer hover:bg-gray-100 hover:rounded-lg"
+                className={`${
+                  location.pathname === item.link && "bg-gray-100"
+                } flex font-bold text-gray-500 text-lg pl-4 py-1 
+                cursor-pointer hover:bg-gray-100 hover:rounded-lg`}
                 to={item.link}
               >
-                {item.title}
+                {item.linkTitle}
               </Link>
             </div>
           ))}
         </motion.div>
 
-        <a href="/home" className="hidden md:flex text-blue-600">
+        <a href="/user/home" className="hidden md:flex text-blue-600">
           WanderMate
         </a>
         <div className="hidden md:flex md:gap-4 lg:gap-8 items-center">
           {headerLinks.map((nav, index) => (
             <li
               key={index}
-              className="list-none cursor-pointer lg:text-xl hover:border-b-4 hover:border-b-blue-600"
+              className={`${
+                location.pathname === nav.link && "border-b-blue-600 border-b-4"
+              } list-none cursor-pointer lg:text-xl hover:border-b-4 hover:border-b-blue-600`}
             >
               <a href={nav.link}>{nav.linkTitle}</a>
             </li>
@@ -84,14 +91,14 @@ const Header = () => {
           {showLogout && (
             <div className="absolute right-0 mt-2 w-32 bg-white shadow-lg rounded-lg z-10">
               <a
-                href="/user/1"
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200"
+                href="/user/profile/1"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 hover:rounded-t-lg"
               >
                 Profile
               </a>
               <button
                 onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200"
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 hover:rounded-b-lg"
               >
                 Logout
               </button>

@@ -1,4 +1,5 @@
-import { hotels, travelPackages, topDestinations } from "../helper/data";
+import { useEffect, useState } from "react";
+import { getHotels, getTopDestinations, getTravelPackages } from "../api";
 import Cards from "../components/Cards";
 import TopHotels from "../assets/bg2.jpg";
 import TopTravelPackage from "../assets/bg5.jpg";
@@ -7,6 +8,34 @@ import bgImg from "../assets/headerImg9.jpg";
 import { IoSearch } from "react-icons/io5";
 
 const Home = () => {
+  const destinationUrl = "/user/destinations";
+  const hotelUrl = "/user/hotels";
+  const travelPackagesUrl = "/user/travelPackages";
+
+  const [topDestinations, setTopDestinations] = useState([]);
+  const [hotels, setHotels] = useState([]);
+  const [travelPackages, setTravelPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchTopDestinations = async () => {
+      const data = await getTopDestinations();
+      setTopDestinations(data);
+    };
+
+    const fetchHotels = async () => {
+      const data = await getHotels();
+      setHotels(data);
+    };
+
+    const fetchTravelPackages = async () => {
+      const data = await getTopDestinations();
+      setTravelPackages(data);
+    };
+
+    fetchTopDestinations();
+    fetchHotels();
+    fetchTravelPackages();
+  }, []);
   return (
     <>
       {/* home */}
@@ -63,7 +92,7 @@ const Home = () => {
               </h1>
             </div>
             {/* cards */}
-            <Cards data={topDestinations} />
+            <Cards data={topDestinations} url={destinationUrl} />
           </div>
 
           {/* hotel */}
@@ -80,7 +109,7 @@ const Home = () => {
               </h1>
             </div>
             {/* cards */}
-            <Cards data={hotels} />
+            <Cards data={hotels} url={hotelUrl} />
           </div>
 
           {/* destinations */}
@@ -97,7 +126,7 @@ const Home = () => {
               </h1>
             </div>
             {/* cards */}
-            <Cards data={travelPackages} />
+            <Cards data={travelPackages} url={travelPackagesUrl} />
           </div>
         </div>
       </div>
